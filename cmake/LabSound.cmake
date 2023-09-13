@@ -25,7 +25,7 @@ endif()
 
 if (LABSOUND_USE_MINIAUDIO)
     set(labsnd_backend
-        "${LABSOUND_ROOT}/src/backends/miniaudio/AudioDestinationMiniaudio.cpp"
+        "${LABSOUND_ROOT}/src/backends/miniaudio/AudioDestinationMiniaudio.mm"
         "${LABSOUND_ROOT}/src/backends/miniaudio/AudioDestinationMiniaudio.h"
         "${LABSOUND_ROOT}/src/backends/miniaudio/miniaudio.h"
     )
