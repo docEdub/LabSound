@@ -301,4 +301,4 @@ add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
 #     add_library(LabSoundRtAudio::LabSoundRtAudio ALIAS LabSoundRtAudio)
 # endif()
 
-target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP)
+target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP MA_NO_NULL)
