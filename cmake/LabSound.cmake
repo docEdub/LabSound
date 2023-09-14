@@ -301,5 +301,7 @@ add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
 #     add_library(LabSoundRtAudio::LabSoundRtAudio ALIAS LabSoundRtAudio)
 # endif()
 
-target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP MA_NO_NULL)
-target_link_libraries(LabSoundMiniAudio PRIVATE mmdevapi.lib)
+if(WINDOWS_STORE) # UWP
+    target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP MA_NO_NULL)
+    target_link_libraries(LabSoundMiniAudio PRIVATE mmdevapi.lib)
+endif()
