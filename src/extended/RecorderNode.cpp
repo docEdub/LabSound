@@ -9,7 +9,7 @@
 #include "internal/Assertions.h"
 #include "LabSound/extended/Registry.h"
 
-#include "libnyquist/Encoders.h"
+// #include "libnyquist/Encoders.h"
 
 using namespace lab;
 
@@ -114,7 +114,7 @@ void RecorderNode::process(ContextRenderLock & r, int bufferSize)
         }
     }
 
-    // pass through 
+    // pass through
     if (outputBus)
         outputBus->copyFrom(*inputBus);
 }
@@ -123,7 +123,7 @@ void RecorderNode::process(ContextRenderLock & r, int bufferSize)
 float RecorderNode::recordedLengthInSeconds() const
 {
     size_t recordedChannelCount = m_data.size();
-    if (!recordedChannelCount) 
+    if (!recordedChannelCount)
         return 0;
 
     size_t numSamples = m_data[0].size();
@@ -133,63 +133,64 @@ float RecorderNode::recordedLengthInSeconds() const
 
 bool RecorderNode::writeRecordingToWav(const std::string & filenameWithWavExtension, bool mixToMono)
 {
-    size_t recordedChannelCount = m_data.size();
-    if (!recordedChannelCount) return false;
-    size_t numSamples = m_data[0].size();
-    if (!numSamples) return false;
+    // size_t recordedChannelCount = m_data.size();
+    // if (!recordedChannelCount) return false;
+    // size_t numSamples = m_data[0].size();
+    // if (!numSamples) return false;
 
-    std::unique_ptr<nqr::AudioData> fileData(new nqr::AudioData());
+    // std::unique_ptr<nqr::AudioData> fileData(new nqr::AudioData());
 
-    std::vector<std::vector<float>> clear_data;
-    for (int i = 0; i < recordedChannelCount; ++i)
-        clear_data.emplace_back(std::vector<float>());
+    // std::vector<std::vector<float>> clear_data;
+    // for (int i = 0; i < recordedChannelCount; ++i)
+    //     clear_data.emplace_back(std::vector<float>());
 
-    {
-        std::lock_guard<std::recursive_mutex> lock(m_mutex);
-        m_data.swap(clear_data);
-    }
+    // {
+    //     std::lock_guard<std::recursive_mutex> lock(m_mutex);
+    //     m_data.swap(clear_data);
+    // }
 
-    if (recordedChannelCount == 1)
-    {
-        // only one channel recorded
-        fileData->samples.resize(numSamples);
-        fileData->channelCount = 1;
-        float* dst = fileData->samples.data();
-        memcpy(dst, clear_data[0].data(), sizeof(float) * numSamples);
-    }
-    else if (recordedChannelCount > 1 && mixToMono)
-    {
-        // Mix channels to mono if requested, and there's more than one input channel.
-        fileData->samples.resize(numSamples);
-        fileData->channelCount = 1;
-        float* dst = fileData->samples.data();
-        for (size_t i = 0; i < numSamples; i++)
-        {
-            dst[i] = 0;
-            for (size_t j = 0; j < _self->m_channelCount; ++j)
-                dst[i] += clear_data[j][i];
-            dst[i] *= 1.f / static_cast<float>(_self->m_channelCount);
-        }
-    }
-    else
-    {
-        // straight through
-        fileData->samples.resize(numSamples * recordedChannelCount);
-        fileData->channelCount = static_cast<int>(recordedChannelCount);
-        float* dst = fileData->samples.data();
-        for (size_t i = 0; i < numSamples; i++)
-        {
-            for (size_t j = 0; j < recordedChannelCount; ++j)
-                *dst++ = clear_data[j][i];
-        }
-    }
+    // if (recordedChannelCount == 1)
+    // {
+    //     // only one channel recorded
+    //     fileData->samples.resize(numSamples);
+    //     fileData->channelCount = 1;
+    //     float* dst = fileData->samples.data();
+    //     memcpy(dst, clear_data[0].data(), sizeof(float) * numSamples);
+    // }
+    // else if (recordedChannelCount > 1 && mixToMono)
+    // {
+    //     // Mix channels to mono if requested, and there's more than one input channel.
+    //     fileData->samples.resize(numSamples);
+    //     fileData->channelCount = 1;
+    //     float* dst = fileData->samples.data();
+    //     for (size_t i = 0; i < numSamples; i++)
+    //     {
+    //         dst[i] = 0;
+    //         for (size_t j = 0; j < _self->m_channelCount; ++j)
+    //             dst[i] += clear_data[j][i];
+    //         dst[i] *= 1.f / static_cast<float>(_self->m_channelCount);
+    //     }
+    // }
+    // else
+    // {
+    //     // straight through
+    //     fileData->samples.resize(numSamples * recordedChannelCount);
+    //     fileData->channelCount = static_cast<int>(recordedChannelCount);
+    //     float* dst = fileData->samples.data();
+    //     for (size_t i = 0; i < numSamples; i++)
+    //     {
+    //         for (size_t j = 0; j < recordedChannelCount; ++j)
+    //             *dst++ = clear_data[j][i];
+    //     }
+    // }
 
-    fileData->sampleRate = static_cast<int>(m_sampleRate);
-    fileData->sourceFormat = nqr::PCM_FLT;
+    // fileData->sampleRate = static_cast<int>(m_sampleRate);
+    // fileData->sourceFormat = nqr::PCM_FLT;
 
-    nqr::EncoderParams params = {static_cast<int>(recordedChannelCount), nqr::PCM_FLT, nqr::DITHER_NONE};
-    bool result = nqr::EncoderError::NoError == nqr::encode_wav_to_disk(params, fileData.get(), filenameWithWavExtension);
-    return result;
+    // nqr::EncoderParams params = {static_cast<int>(recordedChannelCount), nqr::PCM_FLT, nqr::DITHER_NONE};
+    // bool result = nqr::EncoderError::NoError == nqr::encode_wav_to_disk(params, fileData.get(), filenameWithWavExtension);
+    // return result;
+    return false;
 }
 
 std::unique_ptr<AudioBus> RecorderNode::createBusFromRecording(bool mixToMono)

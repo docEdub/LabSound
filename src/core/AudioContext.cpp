@@ -21,9 +21,10 @@
 #include "internal/Assertions.h"
 
 #include "concurrentqueue/concurrentqueue.h"
-#include "libnyquist/Encoders.h"
+//#include "libnyquist/Encoders.h"
 
 #include <assert.h>
+#include <map>
 #include <queue>
 #include <stdio.h>
 
@@ -103,15 +104,15 @@ struct AudioContext::Internals
         if (!debugBufferIndex || !wavFilePath)
             return;
 
-        nqr::AudioData fileData;
-        fileData.samples.resize(debugBufferIndex + 32);
-        fileData.channelCount = 1;
-        float* dst = fileData.samples.data();
-        memcpy(dst, debugBuffer.data(), sizeof(float) * debugBufferIndex);
-        fileData.sampleRate = static_cast<int>(44100);
-        fileData.sourceFormat = nqr::PCM_FLT;
-        nqr::EncoderParams params = { 1, nqr::PCM_FLT, nqr::DITHER_NONE };
-        int err = nqr::encode_wav_to_disk(params, &fileData, wavFilePath);
+        //nqr::AudioData fileData;
+        //fileData.samples.resize(debugBufferIndex + 32);
+        //fileData.channelCount = 1;
+        //float* dst = fileData.samples.data();
+        //memcpy(dst, debugBuffer.data(), sizeof(float) * debugBufferIndex);
+        //fileData.sampleRate = static_cast<int>(44100);
+        //fileData.sourceFormat = nqr::PCM_FLT;
+        //nqr::EncoderParams params = { 1, nqr::PCM_FLT, nqr::DITHER_NONE };
+        //int err = nqr::encode_wav_to_disk(params, &fileData, wavFilePath);
         debugBufferIndex = 0;
     }
 };
