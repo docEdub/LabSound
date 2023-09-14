@@ -7,24 +7,26 @@
 # Will create a target named LabSound
 
 # backend selection
-if (IOS)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
-elseif (APPLE)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
-elseif (WIN32)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
-elseif (ANDROID)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
-elseif (UNIX)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
-else ()
-    message(FATAL, " Untested platform. Please try miniaudio and report results on the LabSound issues page")
-endif()
+# if (IOS)
+#     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
+#     option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
+# elseif (APPLE)
+#     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
+#     option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
+# elseif (WIN32)
+#     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
+#     option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
+# elseif (ANDROID)
+#     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
+#     option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
+# elseif (UNIX)
+#     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
+#     option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
+# else ()
+#     message(FATAL, " Untested platform. Please try miniaudio and report results on the LabSound issues page")
+# endif()
+option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
+option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
 
 if (LABSOUND_USE_MINIAUDIO AND LABSOUND_USE_RTAUDIO)
     message(FATAL, " Specify only one backend")
@@ -82,30 +84,30 @@ add_library(LabSound STATIC
  )
 
  #--- CONFIGURE RTAUDIO
-if (NOT IOS)
-    add_library(LabSoundRtAudio STATIC
-        "${LABSOUND_ROOT}/src/backends/RtAudio/AudioDevice_RtAudio.cpp"
-        "${LABSOUND_ROOT}/include/LabSound/backends/AudioDevice_RtAudio.h"
-        "${LABSOUND_ROOT}/src/backends/RtAudio/RtAudio.cpp"
-        "${LABSOUND_ROOT}/src/backends/RtAudio/RtAudio.h"
-    )
+# if (NOT IOS)
+#     add_library(LabSoundRtAudio STATIC
+#         "${LABSOUND_ROOT}/src/backends/RtAudio/AudioDevice_RtAudio.cpp"
+#         "${LABSOUND_ROOT}/include/LabSound/backends/AudioDevice_RtAudio.h"
+#         "${LABSOUND_ROOT}/src/backends/RtAudio/RtAudio.cpp"
+#         "${LABSOUND_ROOT}/src/backends/RtAudio/RtAudio.h"
+#     )
 
-    # set the RtAudio backend selector macros
-    if (WIN32)
-        target_compile_definitions(LabSoundRtAudio PRIVATE __WINDOWS_WASAPI__=1)
-    elseif (APPLE)
-        target_compile_definitions(LabSoundRtAudio PRIVATE __MACOSX_CORE__=1)
-    else()
-        if (LABSOUND_JACK)
-            target_compile_definitions(LabSoundRtAudio PRIVATE __UNIX_JACK__=1)
-        elseif (LABSOUND_PULSE)
-            target_compile_definitions(LabSoundRtAudio PRIVATE __LINUX_PULSE__=1)
-        elseif (LABSOUND_ASOUND)
-            target_compile_definitions(LabSoundRtAudio PRIVATE __LINUX_ALSA__=1)
-        endif()
-    endif()
+#     # set the RtAudio backend selector macros
+#     if (WIN32)
+#         target_compile_definitions(LabSoundRtAudio PRIVATE __WINDOWS_WASAPI__=1)
+#     elseif (APPLE)
+#         target_compile_definitions(LabSoundRtAudio PRIVATE __MACOSX_CORE__=1)
+#     else()
+#         if (LABSOUND_JACK)
+#             target_compile_definitions(LabSoundRtAudio PRIVATE __UNIX_JACK__=1)
+#         elseif (LABSOUND_PULSE)
+#             target_compile_definitions(LabSoundRtAudio PRIVATE __LINUX_PULSE__=1)
+#         elseif (LABSOUND_ASOUND)
+#             target_compile_definitions(LabSoundRtAudio PRIVATE __LINUX_ALSA__=1)
+#         endif()
+#     endif()
 
-endif()
+# endif()
 
  #--- CONFIGURE MINIAUDIO
  if (APPLE)
@@ -206,7 +208,7 @@ function (configureProj proj)
 endfunction()
 
 target_include_directories(LabSound PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 target_include_directories(LabSound PRIVATE
@@ -216,20 +218,20 @@ target_include_directories(LabSound PRIVATE
     ${LABSOUND_ROOT}/third_party/libsamplerate/include
 )
 
-if (NOT IOS)
-    target_include_directories(LabSoundRtAudio PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
-        $<INSTALL_INTERFACE:include>
-    )
-    target_include_directories(LabSoundRtAudio PRIVATE
-        ${LABSOUND_ROOT}/src
-        ${LABSOUND_ROOT}/src/internal
-        ${LABSOUND_ROOT}/third_party
-        ${LABSOUND_ROOT}/third_party/libnyquist/include)
-endif()
+# if (NOT IOS)
+#     target_include_directories(LabSoundRtAudio PUBLIC
+#         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#         $<INSTALL_INTERFACE:include>
+#     )
+#     target_include_directories(LabSoundRtAudio PRIVATE
+#         ${LABSOUND_ROOT}/src
+#         ${LABSOUND_ROOT}/src/internal
+#         ${LABSOUND_ROOT}/third_party
+#         ${LABSOUND_ROOT}/third_party/libnyquist/include)
+# endif()
 
 target_include_directories(LabSoundMiniAudio PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
@@ -256,10 +258,10 @@ target_link_libraries(LabSound
 
 configureProj(LabSound)
 configureProj(LabSoundMiniAudio)
-if (NOT IOS)
-    configureProj(LabSoundRtAudio)
-endif()
-    
+# if (NOT IOS)
+#     configureProj(LabSoundRtAudio)
+# endif()
+
 install(FILES "${LABSOUND_ROOT}/include/LabSound/LabSound.h"
     DESTINATION include/LabSound)
 install(FILES ${labsnd_core_h}
@@ -268,7 +270,7 @@ install(FILES ${labsnd_extended_h}
     DESTINATION include/LabSound/extended)
 install(FILES
     "${LABSOUND_ROOT}/include/LabSound/backends/AudioDevice_Miniaudio.h"
-    "${LABSOUND_ROOT}/include/LabSound/backends/AudioDevice_RtAudio.h"
+    # "${LABSOUND_ROOT}/include/LabSound/backends/AudioDevice_RtAudio.h"
    DESTINATION include/LabSound/backends)
 
 install(DIRECTORY
@@ -294,6 +296,6 @@ source_group(third_party\\rtaudio FILES ${third_rtaudio})
 
 add_library(LabSound::LabSound ALIAS LabSound)
 add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
-if (NOT IOS)
-    add_library(LabSoundRtAudio::LabSoundRtAudio ALIAS LabSoundRtAudio)
-endif()
+# if (NOT IOS)
+#     add_library(LabSoundRtAudio::LabSoundRtAudio ALIAS LabSoundRtAudio)
+# endif()
