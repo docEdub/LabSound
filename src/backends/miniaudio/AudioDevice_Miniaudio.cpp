@@ -199,6 +199,8 @@ namespace
 AudioDevice_Miniaudio::AudioDevice_Miniaudio(const AudioStreamConfig & _inputConfig,
                                              const AudioStreamConfig & _outputConfig)
 : AudioDevice(_inputConfig, _outputConfig)
+, inputConfig(_inputConfig)
+, outputConfig(_outputConfig)
 {
     _device = new ma_device();
     auto device_list = MakeAudioDeviceList();
