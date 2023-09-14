@@ -300,3 +300,5 @@ add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
 # if (NOT IOS)
 #     add_library(LabSoundRtAudio::LabSoundRtAudio ALIAS LabSoundRtAudio)
 # endif()
+
+target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP)
