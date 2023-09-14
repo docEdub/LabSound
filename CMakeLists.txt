@@ -20,19 +20,19 @@ else()
     endif()
 endif()
 
-if (LABSOUND_ASOUND)
-    set(LIBNYQUIST_ASOUND ON)
-elseif (LABSOUND_JACK)
-    set(LIBNYQUIST_JACK ON)
-elseif (LABSOUND_PULSE)
-    set(LIBNYQUIST_PULSE ON)
-endif()
+# if (LABSOUND_ASOUND)
+#     set(LIBNYQUIST_ASOUND ON)
+# elseif (LABSOUND_JACK)
+#     set(LIBNYQUIST_JACK ON)
+# elseif (LABSOUND_PULSE)
+#     set(LIBNYQUIST_PULSE ON)
+# endif()
 
 set(CMAKE_CXX_STANDARD 14)
 
-# turn off building libnyquist samples
-set(LIBNYQUIST_BUILD_EXAMPLE OFF)
-add_subdirectory(third_party/libnyquist)
+# # turn off building libnyquist samples
+# set(LIBNYQUIST_BUILD_EXAMPLE OFF)
+# add_subdirectory(third_party/libnyquist)
 
 include(cmake/LabSound.cmake)
 

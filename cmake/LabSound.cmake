@@ -169,8 +169,8 @@ function (configureProj proj)
             #target_compile_options(${proj} PRIVATE /arch:AVX /Zi)
             target_compile_options(${proj} PRIVATE /Zi)
         endif(MSVC)
-        # TODO: These vars are for libnyquist and should be set in the find libynquist script.
-        target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SINF=1)
+        # # TODO: These vars are for libnyquist and should be set in the find libynquist script.
+        # target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SINF=1)
     elseif(APPLE)
     elseif(ANDROID)
         target_compile_options(${proj} PRIVATE -fPIC)
@@ -185,9 +185,9 @@ function (configureProj proj)
         if(LABSOUND_ASOUND)
             target_link_libraries(${proj} PRIVATE asound)
         endif()
-        # TODO: These vars are for libnyquist and should be set in the find libynquist script.
-        # TODO: libnyquist's loadabc calls getenv and setenv. That's undesirable.
-        target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SETENV=1 HAVE_SINF=1)
+        # # TODO: These vars are for libnyquist and should be set in the find libynquist script.
+        # # TODO: libnyquist's loadabc calls getenv and setenv. That's undesirable.
+        # target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SETENV=1 HAVE_SINF=1)
     elseif(UNIX)
         target_link_libraries(${proj} PRIVATE pthread)
         target_compile_options(${proj} PRIVATE -fPIC)
@@ -201,9 +201,9 @@ function (configureProj proj)
         if(LABSOUND_ASOUND)
             target_link_libraries(${proj} PRIVATE asound)
         endif()
-        # TODO: These vars are for libnyquist and should be set in the find libynquist script.
-        # TODO: libnyquist's loadabc calls getenv and setenv. That's undesirable.
-        target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SETENV=1 HAVE_SINF=1)
+        # # TODO: These vars are for libnyquist and should be set in the find libynquist script.
+        # # TODO: libnyquist's loadabc calls getenv and setenv. That's undesirable.
+        # target_compile_definitions(${proj} PRIVATE HAVE_STDINT_H=1 HAVE_SETENV=1 HAVE_SINF=1)
     endif()
 endfunction()
 
@@ -240,7 +240,8 @@ target_include_directories(LabSoundMiniAudio PRIVATE
     ${LABSOUND_ROOT}/src
     ${LABSOUND_ROOT}/src/internal
     ${LABSOUND_ROOT}/third_party
-    ${LABSOUND_ROOT}/third_party/libnyquist/include)
+    # ${LABSOUND_ROOT}/third_party/libnyquist/include
+    )
 
 if (MSVC_IDE)
     # hack to get around the "Debug" and "Release" directories cmake tries to add on Windows
@@ -253,7 +254,7 @@ endif()
 
 target_link_libraries(LabSound
     ${LABSOUND_PLATFORM_LINK_LIBRARIES}
-    PRIVATE libnyquist::libnyquist
+    # PRIVATE libnyquist::libnyquist
 )
 
 configureProj(LabSound)
