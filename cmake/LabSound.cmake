@@ -304,4 +304,8 @@ add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
 if(WINDOWS_STORE) # UWP
     target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP MA_NO_NULL)
     target_link_libraries(LabSoundMiniAudio PRIVATE mmdevapi.lib)
+
+    # Disable warnings about deprecated localtime function used in LabSound.cpp for logging.
+    # TODO: Find a better way to do handle printing timestamps in log messages.
+    target_compile_definitions(LabSound PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
