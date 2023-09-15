@@ -302,10 +302,19 @@ add_library(LabSoundMiniAudio::LabSoundMiniAudio ALIAS LabSoundMiniAudio)
 # endif()
 
 if(WINDOWS_STORE) # UWP
-    target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP MA_NO_NULL)
-    target_link_libraries(LabSoundMiniAudio PRIVATE mmdevapi.lib)
-
     # Disable warnings about deprecated localtime function used in LabSound.cpp for logging.
     # TODO: Find a better way to do handle printing timestamps in log messages.
     target_compile_definitions(LabSound PRIVATE _CRT_SECURE_NO_WARNINGS)
+
+    # Use static linkage for mmdevapi.lib instead of the dynamic runtime loading used by miniaudio.
+    # TODO: This is a hack. We should be able to use the WASAPI backend without this.
+    target_link_libraries(LabSoundMiniAudio PRIVATE mmdevapi.lib)
+
+    # Force miniaudio to use WASAPI.
+    # TODO: This is a hack. We should be able to use the WASAPI backend without this.
+    target_compile_definitions(LabSoundMiniAudio PRIVATE MA_FORCE_UWP)
+
+    # Force miniaudio to ignore the NULL backend. This was overriding the WASAPI backend before I fixed its init issues.
+    # TODO: This is a hack. We should be able to use the WASAPI backend without this.
+    target_compile_definitions(LabSoundMiniAudio PRIVATE MA_NO_NULL)
 endif()
